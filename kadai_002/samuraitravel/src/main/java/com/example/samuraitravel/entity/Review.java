@@ -29,10 +29,10 @@ public class Review {
     // PK
     // -----------------------------
 
-    @Id // ★ 追加
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ★ 追加
-    @Column(name = "id") // ★ 追加
-    private Long id;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Column(name = "id") 
+    private Integer id;
 
     // -----------------------------
     // 外部キー（ユーザー）
@@ -54,28 +54,28 @@ public class Review {
     // 評価
     // -----------------------------
 
-    @Column(name = "rating", nullable = false) // ★ 追加
+    @Column(name = "rating", nullable = false) 
     private Integer rating;
 
     // -----------------------------
     // コメント
     // -----------------------------
 
-    @Column(name = "comment", length = 500) // ★ 追加
+    @Column(name = "comment", length = 500) 
     private String comment;
 
     // -----------------------------
     // 作成日時
     // -----------------------------
 
-    @Column(name = "created_at") // ★ 追加
+    @Column(name = "created_at") 
     private LocalDateTime createdAt;
 
     // -----------------------------
     // 更新日時
     // -----------------------------
 
-    @Column(name = "updated_at") // ★ 追加
+    @Column(name = "updated_at") 
     private LocalDateTime updatedAt;
 
     // -----------------------------
