@@ -6,15 +6,16 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
-import com.example.samuraitravel.entity.User;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    List<Review> findByHouseOrderByCreatedAtDesc(House house);
+	// 単純に先頭6件を取得
+	List<Review> findTop6ByHouseIdOrderByCreatedAtDesc(Integer houseId);
 
-    Optional<Review> findByHouseAndUser(House house, User user);
+	//自分のレビューを取得(宿IDとメールアドレスで特定の1件を取得)
+	Optional<Review> findByHouseIdAndUserEmail(Integer houseId, String email);
 
-    long countByHouse(House house);
+	// 宿IDに紐づくレビューを投稿日降順で取得し、特定のIDを除外して取得（最大5件）
+	List<Review> findTop5ByHouseIdAndIdNotOrderByCreatedAtDesc(Integer houseId, Integer reviewId);
 }
