@@ -96,28 +96,28 @@ INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, 
 VALUES (2, 2, 1, 4, '駅から近く便利でした。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (3, 1, 2, 3, '値段相応だと思います。', NOW(), NOW());
+VALUES (3, 3, 1, 3, '値段相応だと思います。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (4, 3, 3, 5, '静かでリラックスできました。', NOW(), NOW());
+VALUES (4, 4, 1, 5, '静かでリラックスできました。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (5, 4, 4, 2, '少し設備が古かったです。', NOW(), NOW());
+VALUES (5, 5, 1, 2, '少し設備が古かったです。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (6, 2, 2, 5, 'オーナーさんが親切で安心できました。', NOW(), NOW());
+VALUES (6, 6, 1, 5, 'オーナーさんが親切で安心できました。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (7, 3, 1, 3, '普通でしたが価格は満足です。', NOW(), NOW());
+VALUES (7, 7, 1, 3, '普通でしたが価格は満足です。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (8, 4, 2, 4, '部屋が広くて快適でした。', NOW(), NOW());
+VALUES (8, 8, 1, 4, '部屋が広くて快適でした。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (9, 1, 3, 5, '景色が最高でした！', NOW(), NOW());
+VALUES (9, 9, 1, 5, '景色が最高でした！', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (10, 5, 4, 2, '騒音が少し気になりました。', NOW(), NOW());
+VALUES (10, 10, 1, 2, '騒音が少し気になりました。', NOW(), NOW());
 
 INSERT IGNORE INTO reviews (id, user_id, house_id, rating, comment, created_at, updated_at)
-VALUES (11, 3, 4, 4, '総合的には満足です。', NOW(), NOW());
+VALUES (11, 11, 1, 4, '総合的には満足です。', NOW(), NOW());
