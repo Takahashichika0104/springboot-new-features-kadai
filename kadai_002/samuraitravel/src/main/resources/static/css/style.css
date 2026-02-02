@@ -126,6 +126,39 @@ footer {
     max-width: 300px;
 }
 
+.review-container {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+}
+
+select, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.submit-btn {
+  width: 200px;
+  margin: 20px auto 0;
+  display: block;
+  background-color: #5fa3b0;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+}
+
 @media screen and (min-width: 1400px) {
  .samuraitravel-container {
    max-width: 1200px;

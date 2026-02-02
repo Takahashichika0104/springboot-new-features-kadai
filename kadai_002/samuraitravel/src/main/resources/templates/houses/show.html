@@ -171,9 +171,10 @@
 
 						<!-- ★ 追加・変更：ログイン時のみ表示 ＆ さらに下に配置 -->
 						<div sec:authorize="isAuthenticated()" class="text-center mt-3">
-							<button class="btn text-white shadow-sm w-50 samuraitravel-btn">
+							<a th:href="@{/houses/{id}/reviews/new(id=${house.id})}"
+								class="btn text-white shadow-sm w-50 samuraitravel-btn">
 								レビューを投稿する
-							</button>
+							</a>
 						</div>
 
 

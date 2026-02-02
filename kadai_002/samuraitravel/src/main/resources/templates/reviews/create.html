@@ -1,0 +1,78 @@
+<!-- ★新規作成 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>レビュー投稿</title>
+
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+	<div class="samuraitravel-wrapper">
+		<!-- ★ヘッダー（共通レイアウト） -->
+		<header class="header">
+			<div class="header-inner">
+				<a th:href="@{/}" class="logo">SAMURAI Travel</a>
+				<div class="user-menu">
+					<span th:text="${#authentication.name}">ユーザー名</span>
+				</div>
+			</div>
+		</header>
+
+		<!-- ★パンくずリスト -->
+		<nav class="breadcrumb">
+			<a th:href="@{/}">ホーム</a>
+			<span>&gt;</span>
+			<a th:href="@{/houses}">民宿一覧</a>
+			<span>&gt;</span>
+			<a th:href="@{/houses/{id}(id=${house.id})}">民宿詳細</a>
+			<span>&gt;</span>
+			<span>レビュー投稿</span>
+		</nav>
+
+		<div class="review-container">
+
+			<h2 th:text="${house.name} + 'のレビュー投稿'"></h2>
+
+			<form th:action="@{/reviews/store}" method="post" th:object="${reviewForm}">
+
+				<!-- 評価 -->
+				<div class="form-group">
+					<label>評価</label>
+					<select th:field="*{rating}">
+						<option value="">選択してください</option>
+						<option th:value="1">★</option>
+						<option th:value="2">★★</option>
+						<option th:value="3">★★★</option>
+						<option th:value="4">★★★★</option>
+						<option th:value="5">★★★★★</option>
+					</select>
+					<p th:errors="*{rating}"></p>
+				</div>
+
+				<!-- コメント -->
+				<div class="form-group">
+					<label>コメント</label>
+					<textarea th:field="*{comment}" rows="5"></textarea>
+					<p th:errors="*{comment}"></p>
+				</div>
+
+				<!-- 民宿ID -->
+				<input type="hidden" name="houseId" th:value="${house.id}">
+
+				<button type="submit" class="submit-btn">投稿</button>
+			</form>
+
+			<!-- ★フッター -->
+			<footer class="footer">
+				<p>© SAMURAI Travel All rights reserved.</p>
+			</footer>
+		</div>
+	</div>
+
+</body>
+
+</html>

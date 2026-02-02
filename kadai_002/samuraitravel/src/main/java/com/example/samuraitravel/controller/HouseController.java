@@ -96,7 +96,7 @@ public class HouseController {
 		//ログイン情報を取得
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		//ログイン済みか確認する
-		if(auth != null && trustResolver.isAnonymous(auth) != true) {
+		if (auth != null && trustResolver.isAnonymous(auth) != true) {
 			email = auth.getName();
 		}
 		//未ログインの場合
@@ -105,10 +105,10 @@ public class HouseController {
 		}
 
 		//表示用レビューを取得
-		List<Review> reviews = reviewService.getReviewsForDisplay(id,email);
-		
+		List<Review> reviews = reviewService.getReviewsForDisplay(id, email);
+
 		//model型のmodelにレビュの情報を追加
-		model.addAttribute("reviews",reviews);
+		model.addAttribute("reviews", reviews);
 
 		return "houses/show";
 	}
