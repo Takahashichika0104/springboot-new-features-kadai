@@ -234,7 +234,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="text-center mt-3">
+						<div class="text-center mt-3" th:unless="${#lists.isEmpty(reviews)}">
 							<a th:href="@{/houses/{id}/reviews(id=${house.id})}">
 								すべてのレビューを見る
 							</a>
