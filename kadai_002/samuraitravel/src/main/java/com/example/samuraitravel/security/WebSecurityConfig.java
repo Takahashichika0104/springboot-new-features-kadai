@@ -17,33 +17,59 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .authorizeHttpRequests((requests) -> requests                                                
-                 .requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/signup/**", "/houses", "/houses/{id}", "/stripe/webhook").permitAll()  // すべてのユーザーにアクセスを許可するURL
-                .requestMatchers("/admin/**").hasRole("ADMIN")  // 管理者にのみアクセスを許可するURL
-                .anyRequest().authenticated()                   // 上記以外のURLはログインが必要（会員または管理者のどちらでもOK）
+            .authorizeHttpRequests(requests -> requests
+
+                // =========================
+                // ★ 誰でもアクセス可能
+                // =========================
+                .requestMatchers(
+                    "/css/**",
+                    "/images/**",
+                    "/js/**",
+                    "/storage/**",
+                    "/",
+                    "/signup/**",
+                    "/houses",
+                    "/houses/*",
+                    "/houses/*/reviews",     // ★ 追加：レビュー一覧
+                    "/stripe/webhook"
+                ).permitAll()
+
+                // =========================
+                // ★ ログイン必須
+                // =========================
+                .requestMatchers("/houses/*/reviews/new").authenticated()
+
+                // =========================
+                // ★ 管理者専用
+                // =========================
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // =========================
+                // ★ その他
+                // =========================
+                .anyRequest().authenticated()
             )
-            .formLogin((form) -> form
-                .loginPage("/login")              // ログインページのURL
-                .loginProcessingUrl("/login")     // ログインフォームの送信先URL
-                .defaultSuccessUrl("/?loggedIn")  // ログイン成功時のリダイレクト先URL
-                .failureUrl("/login?error")       // ログイン失敗時のリダイレクト先URL
+            .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/?loggedIn")
+                .failureUrl("/login?error")
                 .permitAll()
             )
-            .logout((logout) -> logout
-                .logoutSuccessUrl("/?loggedOut")  // ログアウト時のリダイレクト先URL
+            .logout(logout -> logout
+                .logoutSuccessUrl("/?loggedOut")
                 .permitAll()
             )
             .csrf(csrf -> csrf
-                    .ignoringRequestMatchers("/stripe/webhook")
-                );
-        
-            
+                .ignoringRequestMatchers("/stripe/webhook")
+            );
+
         return http.build();
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
 }
