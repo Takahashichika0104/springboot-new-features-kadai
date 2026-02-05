@@ -118,4 +118,102 @@ public class ReviewController {
 
 		return "reviews/index";
 	}
+
+	// ================================
+	// ★ レビュー編集フォーム表示
+	// URL: GET /houses/{houseId}/reviews/{reviewId}/edit
+	// ================================
+	@GetMapping("/{reviewId}/edit")
+	public String editReview(
+			@PathVariable Integer houseId,
+			@PathVariable Integer reviewId,
+			@AuthenticationPrincipal UserDetails userDetails,
+			Model model) {
+
+		Review review = reviewService.findById(reviewId);
+
+		// 本人チェック（他人のレビュー編集防止）
+		if (userDetails == null ||
+				!review.getUser().getEmail().equals(userDetails.getUsername())) {
+			return "redirect:/";
+		}
+
+		ReviewForm reviewForm = new ReviewForm();
+		reviewForm.setRating(review.getRating());
+		reviewForm.setComment(review.getComment());
+
+		model.addAttribute("review", review);
+		model.addAttribute("house", review.getHouse());
+		model.addAttribute("reviewForm", reviewForm);
+
+		return "reviews/edit";
+	}
+
+	// ================================
+	// ★ レビュー更新処理
+	// URL: POST /houses/{houseId}/reviews/{reviewId}/edit
+	// ================================
+	@PostMapping("/{reviewId}/edit")
+	public String updateReview(
+			@PathVariable Integer houseId,
+			@PathVariable Integer reviewId,
+			@Valid ReviewForm reviewForm,
+			BindingResult bindingResult,
+			@AuthenticationPrincipal UserDetails userDetails,
+			Model model,
+			RedirectAttributes redirectAttributes) {
+
+		Review review = reviewService.findById(reviewId);
+
+		// 本人チェック
+		if (userDetails == null ||
+				!review.getUser().getEmail().equals(userDetails.getUsername())) {
+			return "redirect:/";
+		}
+
+		// バリデーションエラー時
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("review", review);
+			model.addAttribute("house", review.getHouse());
+			return "reviews/edit";
+		}
+
+		// 更新内容をセット
+		review.setRating(reviewForm.getRating());
+		review.setComment(reviewForm.getComment());
+
+		// 保存（updatedAt も自動更新される）
+		reviewService.save(review);
+
+		redirectAttributes.addFlashAttribute("successMessage", "レビューを更新しました");
+
+		return "redirect:/houses/" + houseId;
+	}
+
+	//================================
+	//★ レビュー削除（POST）
+	//URL: POST /houses/{houseId}/reviews/{reviewId}/delete
+	//================================
+	@PostMapping("/{reviewId}/delete")
+	public String deleteReview(
+			@PathVariable Integer houseId,
+			@PathVariable Integer reviewId,
+			@AuthenticationPrincipal UserDetails userDetails,
+			RedirectAttributes redirectAttributes) {
+
+		Review review = reviewService.findById(reviewId);
+
+		// 本人チェック
+		if (userDetails == null ||
+				!review.getUser().getEmail().equals(userDetails.getUsername())) {
+			return "redirect:/";
+		}
+
+		reviewService.delete(review);
+
+		redirectAttributes.addFlashAttribute("successMessage", "レビューを削除しました");
+
+		return "redirect:/houses/" + houseId;
+	}
+
 }

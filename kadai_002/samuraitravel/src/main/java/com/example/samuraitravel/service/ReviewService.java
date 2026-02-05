@@ -63,26 +63,34 @@ public class ReviewService {
 	}
 
 	// =====================================
+	// ★ レビューID取得
+	// =====================================
+	public Review findById(Integer id) {
+		return reviewRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("レビューが存在しません"));
+	}
+
+	// =====================================
 	// ★ 保存（★ここが超重要）
 	// =====================================
 	@Transactional
 	public void save(Review review) {
 
-	LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now();
 
-	// 新規作成時
-	if (review.getId() == null) {
-	review.setCreatedAt(now);
-	}
+		// 新規作成時
+		if (review.getId() == null) {
+			review.setCreatedAt(now);
+		}
 
-	// 新規・更新 共通
-	review.setUpdatedAt(now);
+		// 新規・更新 共通
+		review.setUpdatedAt(now);
 
-	reviewRepository.save(review);
+		reviewRepository.save(review);
 	}
 
 	public void delete(Review review) {
-	reviewRepository.delete(review);
+		reviewRepository.delete(review);
 	}
-	
+
 }

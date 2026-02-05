@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>レビュー編集</title>
+</head>
+
+<body>
+	<div class="samuraitravel-wrapper">
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 samuraitravel-container">
+				<div class="row justify-content-center">
+					<div class="col-xxl-8 col-xl-9 col-lg-10">
+
+						<nav class="mb-4" aria-label="breadcrumb">
+							<ol class="breadcrumb justify-content-center">
+								<li class="breadcrumb-item">
+									<a th:href="@{/houses/{id}(id=${house.id})}">民宿詳細</a>
+								</li>
+								<li class="breadcrumb-item active">レビュー編集</li>
+							</ol>
+						</nav>
+
+						<h1 class="mb-4 text-center">
+							<span th:text="${house.name}"></span> のレビュー編集
+						</h1>
+
+						<div class="row justify-content-center">
+							<div class="col-md-8">
+
+								<!--★ 編集フォーム-->
+								<form method="post" th:action="@{/houses/{houseId}/reviews/{reviewId}/edit(
+houseId=${house.id},reviewId=${review.id})}" th:object="${reviewForm}">
+
+									<!-- CSRF -->
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+									<!-- 評価 -->
+									<div class="mb-4">
+										<label class="form-label fw-bold">評価</label>
+										<select class="form-select" th:field="*{rating}" id="ratingSelect">
+											<option value="5">★★★★★</option>
+											<option value="4">★★★★☆</option>
+											<option value="3">★★★☆☆</option>
+											<option value="2">★★☆☆☆</option>
+											<option value="1">★☆☆☆☆</option>
+										</select>
+
+										<div class="mt-2 text-warning fs-4" id="ratingStars"></div>
+
+										<div th:if="${#fields.hasErrors('rating')}" class="text-danger small mt-1"
+											th:errors="*{rating}"></div>
+									</div>
+
+									<!-- コメント -->
+									<div class="mb-4">
+										<label class="form-label fw-bold">コメント</label>
+										<textarea class="form-control" rows="5" th:field="*{comment}"></textarea>
+										<div th:if="${#fields.hasErrors('comment')}" class="text-danger small mt-1"
+											th:errors="*{comment}"></div>
+									</div>
+
+									<!-- 更新ボタン -->
+									<div class="text-center">
+										<button type="submit" class="btn text-white shadow-sm w-50 samuraitravel-btn">
+											更新する
+										</button>
+									</div>
+								</form>
+
+								<!--削除ボタン編集-->
+								<div class="text-center mt-4">
+									<button type="button" class="btn btn-outline-danger w-50" data-bs-toggle="modal"
+										data-bs-target="#deleteReviewModal">
+										レビューを削除する
+									</button>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<!--削除確認用モーダル-->
+	<div class="modal fade" id="deleteReviewModal" tabindex="-1" aria-labelledby="deleteReviewModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteReviewModalLabel">
+						レビュー削除の確認
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<div class="modal-body text-center">
+					<p class="fw-bold text-danger">
+						本当にこのレビューを削除しますか？
+					</p>
+					<p class="small text-muted">
+						この操作は取り消せません。
+					</p>
+				</div>
+
+				<div class="modal-footer justify-content-center">
+					<form method="post" th:action="@{/houses/{houseId}/reviews/{reviewId}/delete(
+houseId=${house.id},reviewId=${review.id})}">
+						<!-- CSRF -->
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+						<button type="submit" class="btn btn-danger">
+							削除する
+						</button>
+					</form>
+
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						キャンセル
+					</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const select = document.getElementById('ratingSelect');
+			const starsDiv = document.getElementById('ratingStars');
+
+			function renderStars(value) {
+				starsDiv.innerHTML = '';
+				if (!value) return;
+				for (let i = 1; i <= 5; i++) {
+					starsDiv.innerHTML += i <= value ? '★' : '☆';
+				}
+			}
+
+			renderStars(select.value);
+			select.addEventListener('change', () => renderStars(select.value));
+		});
+	</script>
+
+</body>
+
+</html>

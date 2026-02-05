@@ -194,15 +194,22 @@
 											<span th:text="${review.user.name}">ユーザー名</span>
 											<span class="ms-auto" sec:authorize="isAuthenticated()"
 												th:if="${#authentication.name == review.user.email}">
-												<a th:href="@{/reviews/{id}/edit(id=${review.id})}"
+												<a th:href="@{/houses/{houseId}/reviews/{reviewId}/edit(houseId=${house.id},reviewId=${review.id})}"
 													class="text-decoration-none me-2 small">
 													編集
 												</a>
-												<a th:href="@{/reviews/{id}/delete(id=${review.id})}"
-													class="text-decoration-none text-danger small"
-													onclick="return confirm('本当に削除しますか？');">
-													削除
-												</a>
+												<!-- ★修正：aタグ → form(POST) に変更 -->
+												<form
+													th:action="@{/houses/{houseId}/reviews/{reviewId}/delete(houseId=${house.id},reviewId=${review.id})}"
+													method="post" style="display:inline;"
+													onsubmit="return confirm('本当に削除しますか？');">
+
+													<button type="submit"
+														class="btn btn-link p-0 text-decoration-none text-danger small">
+														削除
+													</button>
+												</form>
+
 											</span>
 										</h6>
 
