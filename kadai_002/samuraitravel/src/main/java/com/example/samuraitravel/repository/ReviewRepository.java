@@ -22,4 +22,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 	// ★ レビュー一覧（ページング）
 	Page<Review> findByHouseIdOrderByCreatedAtDesc(Integer houseId, Pageable pageable);
+
+	Optional<Review> findById(Integer id);
 }
