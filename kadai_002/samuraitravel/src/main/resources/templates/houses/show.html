@@ -189,7 +189,22 @@
 									<div class="card-body">
 
 										<!-- 投稿者名 -->
-										<h6 class="fw-bold" th:text="${review.user.name}">ユーザー名</h6>
+										<h6 class="fw-bold mb-1 d-flex align-items-center">
+
+											<span th:text="${review.user.name}">ユーザー名</span>
+											<span class="ms-auto" sec:authorize="isAuthenticated()"
+												th:if="${#authentication.name == review.user.email}">
+												<a th:href="@{/reviews/{id}/edit(id=${review.id})}"
+													class="text-decoration-none me-2 small">
+													編集
+												</a>
+												<a th:href="@{/reviews/{id}/delete(id=${review.id})}"
+													class="text-decoration-none text-danger small"
+													onclick="return confirm('本当に削除しますか？');">
+													削除
+												</a>
+											</span>
+										</h6>
 
 										<!-- 星評価 -->
 										<div class="mb-2">
