@@ -1,6 +1,7 @@
 package com.example.samuraitravel.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
 import com.example.samuraitravel.form.ReservationInputForm;
 import com.example.samuraitravel.repository.HouseRepository;
+import com.example.samuraitravel.repository.ReviewRepository;
 import com.example.samuraitravel.service.ReviewService;
 
 @Controller
@@ -28,10 +30,12 @@ import com.example.samuraitravel.service.ReviewService;
 public class HouseController {
 	private final HouseRepository houseRepository;
 	private final ReviewService reviewService;
+	private final ReviewRepository reviewRepository;
 
-	public HouseController(HouseRepository houseRepository, ReviewService reviewService) {
+	public HouseController(HouseRepository houseRepository, ReviewService reviewService, ReviewRepository reviewRepository) {
 		this.houseRepository = houseRepository;
 		this.reviewService = reviewService;
+		this.reviewRepository = reviewRepository;
 	}
 
 	@GetMapping
@@ -109,6 +113,12 @@ public class HouseController {
 
 		//model型のmodelにレビュの情報を追加
 		model.addAttribute("reviews", reviews);
+		
+		// レビューを投稿しているかを確認し、htmlに渡す
+		Optional<Review> myReview = reviewRepository.findByHouseIdAndUserEmail(id, email);
+		boolean alreadyReviewed = myReview.isPresent();
+
+		model.addAttribute("alreadyReviewed", alreadyReviewed);
 
 		return "houses/show";
 	}

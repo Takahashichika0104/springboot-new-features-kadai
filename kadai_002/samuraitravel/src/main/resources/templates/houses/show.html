@@ -170,7 +170,8 @@
 						<h1 class="mb-4 text-center">レビュー</h1>
 
 						<!-- ★ 追加・変更：ログイン時のみ表示 ＆ さらに下に配置 -->
-						<div sec:authorize="isAuthenticated()" class="text-center mt-3">
+						<div sec:authorize="isAuthenticated()" class="text-center mt-3"
+							th:if="${alreadyReviewed == false}">
 							<a th:href="@{/houses/{id}/reviews/new(id=${house.id})}"
 								class="btn text-white shadow-sm w-50 samuraitravel-btn">
 								レビューを投稿する
