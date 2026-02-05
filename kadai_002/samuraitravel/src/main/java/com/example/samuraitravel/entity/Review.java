@@ -17,78 +17,74 @@ import lombok.Data;
 
 @Data // ★ 追加：getter / setter / toString など自動生成
 @Entity
-@Table(
-    name = "reviews",
-    uniqueConstraints = @UniqueConstraint(
-        columnNames = {"user_id", "house_id"}
-    )
-)
+@Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "house_id" }))
 public class Review {
 
-    // -----------------------------
-    // PK
-    // -----------------------------
+	// -----------------------------
+	// PK
+	// -----------------------------
 
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    @Column(name = "id") 
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
-    // -----------------------------
-    // 外部キー（ユーザー）
-    // -----------------------------
+	// -----------------------------
+	// 外部キー（ユーザー）
+	// -----------------------------
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    // -----------------------------
-    // 外部キー（民宿）
-    // -----------------------------
+	// -----------------------------
+	// 外部キー（民宿）
+	// -----------------------------
 
-    @ManyToOne
-    @JoinColumn(name = "house_id", nullable = false)
-    private House house;
+	@ManyToOne
+	@JoinColumn(name = "house_id", nullable = false)
+	private House house;
 
-    // -----------------------------
-    // 評価
-    // -----------------------------
+	// -----------------------------
+	// 評価
+	// -----------------------------
 
-    @Column(name = "rating", nullable = false) 
-    private Integer rating;
+	@Column(name = "rating", nullable = false)
+	private Integer rating;
 
-    // -----------------------------
-    // コメント
-    // -----------------------------
+	// -----------------------------
+	// コメント
+	// -----------------------------
 
-    @Column(name = "comment", length = 500) 
-    private String comment;
+	@Column(name = "comment", length = 500)
+	private String comment;
 
-    // -----------------------------
-    // 作成日時
-    // -----------------------------
+	// -----------------------------
+	// 作成日時
+	// -----------------------------
 
-    @Column(name = "created_at") 
-    private LocalDateTime createdAt;
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
 
-    // -----------------------------
-    // 更新日時
-    // -----------------------------
+	// -----------------------------
+	// 更新日時
+	// -----------------------------
 
-    @Column(name = "updated_at") 
-    private LocalDateTime updatedAt;
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
 
-    // -----------------------------
-    // 自動設定
-    // -----------------------------
+	// -----------------------------
+	// 自動設定
+	// -----------------------------
 
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
+	@PrePersist
+	public void onCreate() {
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
 
-    @PreUpdate
-    public void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+	@PreUpdate
+	public void onUpdate() {
+		this.updatedAt = LocalDateTime.now();
+	}
 }
