@@ -64,9 +64,6 @@
 											<option value="1">★☆☆☆☆</option>
 										</select>
 
-										<!-- 黄色い星表示（show.htmlと同じ） -->
-										<!--                                    <div class="mt-2 text-warning fs-4" id="ratingStars"></div>-->
-
 										<!-- バリデーションエラー -->
 										<div th:if="${#fields.hasErrors('rating')}" class="text-danger small mt-1"
 											th:errors="*{rating}"></div>
