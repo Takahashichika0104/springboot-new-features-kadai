@@ -50,8 +50,6 @@ houseId=${house.id},reviewId=${review.id})}" th:object="${reviewForm}">
 											<option value="1">★☆☆☆☆</option>
 										</select>
 
-										<div class="mt-2 text-warning fs-4" id="ratingStars"></div>
-
 										<div th:if="${#fields.hasErrors('rating')}" class="text-danger small mt-1"
 											th:errors="*{rating}"></div>
 									</div>
@@ -135,22 +133,25 @@ houseId=${house.id},reviewId=${review.id})}">
 
 	<div th:replace="~{fragment :: scripts}"></div>
 
+	<!-- ★ 評価表示用JavaScript -->
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			const select = document.getElementById('ratingSelect');
-			const starsDiv = document.getElementById('ratingStars');
+		const ratingSelect = document.getElementById("ratingSelect");
 
-			function renderStars(value) {
-				starsDiv.innerHTML = '';
-				if (!value) return;
-				for (let i = 1; i <= 5; i++) {
-					starsDiv.innerHTML += i <= value ? '★' : '☆';
-				}
+		function updateSelectColor() {
+			if (ratingSelect.value === "") {
+				// 未選択のときだけ黒
+				ratingSelect.classList.remove("text-warning");
+			} else {
+				// 選択されたら黄色
+				ratingSelect.classList.add("text-warning");
 			}
+		}
 
-			renderStars(select.value);
-			select.addEventListener('change', () => renderStars(select.value));
-		});
+		// 初期表示（画面表示時）
+		updateSelectColor();
+
+		// 選択が変わったとき
+		ratingSelect.addEventListener("change", updateSelectColor);
 	</script>
 
 </body>
