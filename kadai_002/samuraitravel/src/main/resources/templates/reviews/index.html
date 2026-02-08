@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>レビュー一覧</title>
+</head>
+
+<body>
+<div class="samuraitravel-wrapper">
+
+    <!-- ヘッダー -->
+    <div th:replace="~{fragment :: header}"></div>
+
+    <main>
+        <div class="container pt-4 pb-5 samuraitravel-container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-9 col-xl-10 col-lg-11">
+
+                    <!-- パンくず -->
+                    <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/houses}">民宿一覧</a></li>
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/houses/{id}(id=${house.id})}"
+                                   th:text="${house.name}"></a>
+                            </li>
+                            <li class="breadcrumb-item active">レビュー一覧</li>
+                        </ol>
+                    </nav>
+
+                    <!-- タイトル -->
+                    <h1 class="mb-4 text-center">
+                        <span th:text="${house.name}"></span>のレビュー一覧
+                    </h1>
+
+                    <!-- レビュー一覧 -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4" th:each="review : ${reviews}">
+                            <div class="card h-100">
+                                <div class="card-body">
+
+                                    <!-- ユーザー名 -->
+                                    <h6 class="fw-bold" th:text="${review.user.name}"></h6>
+
+                                    <!-- 星評価 -->
+                                    <div class="mb-2 text-warning">
+                                        <span th:each="i : ${#numbers.sequence(1, review.rating)}">★</span>
+                                        <span th:each="i : ${#numbers.sequence(1, 5 - review.rating)}">☆</span>
+                                    </div>
+
+                                    <!-- 投稿日 -->
+                                    <small class="text-muted"
+                                           th:text="${#temporals.format(review.createdAt, 'yyyy/MM/dd')}"></small>
+
+                                    <!-- コメント -->
+                                    <p class="mt-2 mb-0" th:text="${review.comment}"></p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ページング -->
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+
+                            <li class="page-item"
+                                th:classappend="${reviewPage.first} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/houses/{id}/reviews(id=${house.id}, page=${reviewPage.number - 1})}">
+                                    前
+                                </a>
+                            </li>
+
+                            <li class="page-item"
+                                th:each="i : ${#numbers.sequence(0, reviewPage.totalPages - 1)}"
+                                th:classappend="${i == reviewPage.number} ? 'active'">
+                                <a class="page-link"
+                                   th:text="${i + 1}"
+                                   th:href="@{/houses/{id}/reviews(id=${house.id}, page=${i})}">
+                                </a>
+                            </li>
+
+                            <li class="page-item"
+                                th:classappend="${reviewPage.last} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{/houses/{id}/reviews(id=${house.id}, page=${reviewPage.number + 1})}">
+                                    次
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <div th:replace="~{fragment :: footer}"></div>
+</div>
+
+<div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>
