@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>お気に入り一覧</title>
+</head>
+
+<body>
+	<div class="samuraitravel-wrapper">
+
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 samuraitravel-container">
+				<div class="row justify-content-center">
+					<div class="col-xxl-9 col-xl-10 col-lg-11">
+
+						<!-- パンくず -->
+						<nav class="mb-4" style="--bs-breadcrumb-divider: '>';">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item">
+									<a th:href="@{/}">ホーム</a>
+								</li>
+								<li class="breadcrumb-item active">
+									お気に入り一覧
+								</li>
+							</ol>
+						</nav>
+
+						<!-- タイトル -->
+						<h1 class="text-center mb-4">お気に入り一覧</h1>
+
+						<!-- 一覧 -->
+						<div th:if="${#lists.isEmpty(favorites)}" class="text-center">
+							お気に入りはありません
+						</div>
+
+						<div th:each="favorite : ${favorites}" class="card mb-3">
+
+							<a th:href="@{/houses/{id}(id=${favorite.house.id})}"
+								class="text-decoration-none text-dark">
+
+								<div class="row g-0">
+
+									<!-- 画像 -->
+									<div class="col-md-4">
+										<img th:if="${favorite.house.imageName}"
+											th:src="@{/storage/__${favorite.house.imageName}__}"
+											class="img-fluid rounded-start">
+
+										<img th:unless="${favorite.house.imageName}" th:src="@{/images/noImage.png}"
+											class="img-fluid rounded-start">
+									</div>
+
+									<!-- 詳細 -->
+									<div class="col-md-8">
+										<div class="card-body">
+
+											<h5 th:text="${favorite.house.name}"></h5>
+											<!-- レビュー内容 -->
+
+											<p class="card-text" th:text="${favorite.house.description}">
+											</p>
+											<!-- ★住所＋郵便番号 -->
+											<p class="mb-1 text-muted small">
+												<span>〒</span>
+												<span th:text="${favorite.house.postalCode}"></span>
+												<span class="ms-1" th:text="${favorite.house.address}"></span>
+											</p>
+											<!-- 宿泊料金 -->
+
+											<p class="fw-bold"
+												th:text="${#numbers.formatInteger(favorite.house.price,1,'COMMA') + '円 / 泊'}">
+											</p>
+
+										</div>
+									</div>
+
+								</div>
+
+							</a>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+
+</body>
+
+</html>

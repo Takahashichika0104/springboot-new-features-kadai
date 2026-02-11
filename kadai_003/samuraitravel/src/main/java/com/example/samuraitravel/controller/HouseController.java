@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.samuraitravel.entity.Favorite;
 import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
 import com.example.samuraitravel.form.ReservationInputForm;
+import com.example.samuraitravel.repository.FavoriteRepository;
 import com.example.samuraitravel.repository.HouseRepository;
 import com.example.samuraitravel.repository.ReviewRepository;
 import com.example.samuraitravel.service.ReviewService;
@@ -31,11 +33,14 @@ public class HouseController {
 	private final HouseRepository houseRepository;
 	private final ReviewService reviewService;
 	private final ReviewRepository reviewRepository;
+	private final FavoriteRepository favoriteRepository;
 
-	public HouseController(HouseRepository houseRepository, ReviewService reviewService, ReviewRepository reviewRepository) {
+	public HouseController(HouseRepository houseRepository, ReviewService reviewService,
+			ReviewRepository reviewRepository, FavoriteRepository favoriteRepository) {
 		this.houseRepository = houseRepository;
 		this.reviewService = reviewService;
 		this.reviewRepository = reviewRepository;
+		this.favoriteRepository = favoriteRepository;
 	}
 
 	@GetMapping
@@ -113,12 +118,25 @@ public class HouseController {
 
 		//model型のmodelにレビュの情報を追加
 		model.addAttribute("reviews", reviews);
-		
+
 		// レビューを投稿しているかを確認し、htmlに渡す
 		Optional<Review> myReview = reviewRepository.findByHouseIdAndUserEmail(id, email);
 		boolean alreadyReviewed = myReview.isPresent();
 
 		model.addAttribute("alreadyReviewed", alreadyReviewed);
+
+		// ======================
+		// ★ お気に入り判定（追加）
+		// ======================
+		boolean isFavorite = false;
+
+		if (email != null) {
+			Optional<Favorite> favorite = favoriteRepository.findByHouseIdAndUserEmail(id, email);
+
+			isFavorite = favorite.isPresent();
+		}
+
+		model.addAttribute("isFavorite", isFavorite);
 
 		return "houses/show";
 	}
